@@ -26,13 +26,15 @@ resource "azurerm_linux_virtual_machine" "az_dev_linux_vm" {
   }
 
   provisioner "local-exec" {
-    command = templatefile("windows-ssh-script.tpl", {
+    command = templatefile("${var.host_os}-ssh-script.tpl", {
       hostname     = self.public_ip_address, # taken from state file
       user         = "thebinaryhack",
       identityfile = "~/.ssh/id_rsa.pub"
     })
-    interpreter = ["Powershell", "-Command"]
+    # interpreter = ["Powershell", "-Command"]
     # for linux/mac, interprter = ["bash", "-c"]
+    # Or use a conditional statement.
+    interpreter = var.host_os == "windows" ? ["Powershell", "-Command"] : ["bash", "-c"]
   }
 
   tags {
