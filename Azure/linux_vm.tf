@@ -25,7 +25,7 @@ resource "azurerm_linux_virtual_machine" "az_dev_linux_vm" {
     version   = "latest"
   }
 
-  provisioner "local exec" {
+  provisioner "local-exec" {
     command = templatefile("windows-ssh-script.tpl", {
       hostname     = self.public_ip_address, # taken from state file
       user         = "thebinaryhack",
